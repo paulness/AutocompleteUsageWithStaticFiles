@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <link rel="stylesheet" href="autocomplete/auto-complete.css" />    
+    <div>
+        <label for="txt-autocomplete">Start typing: </label>
+        <input id="txt-autocomplete" />
+    </div>
+    <script src="autocomplete/auto-complete.min.js"></script>
+    <script>
+        var xhr;
+        new autoComplete({
+            selector: document.getElementById('txt-autocomplete'),
+            minChars: 1,
+            delay: 0,
+            source: function (term, response) {
+                try { xhr.abort(); } catch (e) { }
+                xhr = new XMLHttpRequest();
+                xhr.open("GET", "autocomplete/results/" + term.toUpperCase() + ".json", true);
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        response(JSON.parse(xhr.responseText));
+                    }
+                }
+                xhr.send();
+            },
+            renderItem: function (item, search) {
+                debugger;
+                return '<div class="autocomplete-suggestion" data-countryregion="' + item.additionalInfo.region + '">' + item.results + '</div>';
+            },
+            onSelect: function (e, term, item) {
+                alert('You have selected ' + item.innerHTML + '. Which is in the region: ' + item.getAttribute('data-countryregion'));
+            }
+        });
+    </script>
+</body>
+
+</html>
