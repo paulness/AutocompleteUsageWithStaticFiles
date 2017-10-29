@@ -30,7 +30,6 @@
                 xhr.send();
             },
             renderItem: function (item, search) {
-                debugger;
                 return '<div class="autocomplete-suggestion" data-countryregion="' + item.additionalInfo.region + '">' + item.results + '</div>';
             },
             onSelect: function (e, term, item) {
